@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Danh sách điểm danh nhận diện khuôn mặt</h1>
+    <ol id="attendance">
+
+    </ol>
+</body>
+<script>
+    let list_attendance = JSON.parse(localStorage.getItem("list_attendance"))
+    let html = list_attendance?.map(v=>{
+        return `<li>${v}</li>`
+    })
+    document.getElementById("attendance").innerHTML= html?.join(" ")
+</script>
+</html>
