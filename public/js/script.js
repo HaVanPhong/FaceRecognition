@@ -44,9 +44,10 @@ async function recognizeFaces() {
                 return faceMatcher.findBestMatch(d.descriptor)
             })
             results.forEach( (result, i) => {
-                if (!list_attendance.includes(result._label) && result._label!=='unknown'){
+                let check = list_attendance.every(e=> e.name !== result._label)
+                if (check && result._label!=='unknown'){
                     console.log(result._label);
-                    list_attendance.push(result._label)
+                    list_attendance.push({name: result._label, time: new Date()})
                     localStorage.setItem("list_attendance", JSON.stringify(list_attendance))
                 }
                 const box = resizedDetections[i].detection.box

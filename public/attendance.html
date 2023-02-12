@@ -5,18 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+ 
 </head>
 <body>
     <h1>Danh sách điểm danh nhận diện khuôn mặt</h1>
+    <button id="btnTai">Xuất file excel</button>
+    <a id="linkDL" style="display: none;" href="http://localhost:3000/download">bấm vào đây hoặc truy cập: http://localhost:3000/dowload</a>
     <ol id="attendance">
 
     </ol>
 </body>
 <script>
-    let list_attendance = JSON.parse(localStorage.getItem("list_attendance"))
-    let html = list_attendance?.map(v=>{
-        return `<li>${v}</li>`
+    let data = JSON.parse(localStorage.getItem("list_attendance"))    
+    let html = data?.map(v=>{
+        return `<li>Name: ${v.name } __ Time: ${v.time}</li>`
     })
     document.getElementById("attendance").innerHTML= html?.join(" ")
+
+    let btnTai = document.getElementById('btnTai')
+    btnTai.addEventListener('click', async()=>{
+        const rawResponse = await fetch('http://localhost:3000/excel', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: localStorage.getItem("list_attendance")
+        }); 
+        const content = await rawResponse.text();
+        console.log(content);
+        if (content=="ok"){
+            document.getElementById('linkDL').style.display='block'
+        }
+    })
 </script>
 </html>
